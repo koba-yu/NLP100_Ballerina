@@ -22,12 +22,8 @@ service NLP on new http:Listener(9090) {
     resource function Answer2(http:Caller caller, http:Request request) {
         var characters = stringutils:split("パタトクカシーー", "")
             .enumerate()
-            .filter(function ([int, (string | error)] x) returns boolean {
-                return x[0] % 2 == 0 && x[1] is string;
-            })
-            .map(function([int, (string | error)] x) returns string {
-                return <string>x[1];
-            });
+            .filter(function ([int, (string | error)] x) returns boolean => x[0] % 2 == 0 && x[1] is string)
+            .map(function([int, (string | error)] x) returns string => <string>x[1]);
 
         error? result = caller->respond("".'join(...characters));
         if(result is error) {
